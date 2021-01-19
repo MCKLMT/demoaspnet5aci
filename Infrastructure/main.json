@@ -13,33 +13,7 @@
     }
   },
   "functions": [],
-  "variables": {
-    "identityName": "scratch",
-    "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')]",
-    "roleAssignmentName": "[guid(variables('identityName'), variables('roleDefinitionId'))]"
-  },
   "resources": [
-    {
-      "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
-      "apiVersion": "2018-11-30",
-      "name": "webAppIdentity",
-      "location": "[parameters('location')]"
-    },
-    {
-      "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2020-04-01-preview",
-      "scope": "[format('Microsoft.ContainerRegistry/registries/{0}', format('{0}acr', parameters('webAppName')))]",
-      "name": "[variables('roleAssignmentName')]",
-      "properties": {
-        "roleDefinitionId": "[variables('roleDefinitionId')]",
-        "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', 'webAppIdentity')).principalId]",
-        "principalType": "ServicePrincipal"
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.ContainerRegistry/registries', format('{0}acr', parameters('webAppName')))]",
-        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', 'webAppIdentity')]"
-      ]
-    },
     {
       "type": "Microsoft.ContainerRegistry/registries",
       "apiVersion": "2020-11-01-preview",
@@ -65,10 +39,6 @@
     "registryNameOutput": {
       "type": "string",
       "value": "[format('{0}acr', parameters('webAppName'))]"
-    },
-    "managedIdentityIdOutput": {
-      "type": "string",
-      "value": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', 'webAppIdentity')]"
     }
   }
 }
