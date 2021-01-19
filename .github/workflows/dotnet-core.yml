@@ -48,4 +48,4 @@ jobs:
         with:
           azcliversion: latest
           inlineScript: |
-            az container create -g ${{ steps.deploy.outputs.resourceGroupOutput }} --name ${{ steps.deploy.outputs.webAppNameOutput }} --image ${{ steps.deploy.outputs.registryLoginServer }}/aspnet5webapp:${{ env.COMMIT_REF }} --assign-identity ${{ steps.deploy.outputs.managedIdentityIdOutput }} --cpu 1 --memory 1 --registry-loginserver ${{ steps.deploy.outputs.registryLoginServerOutput }} --registry-username ${{ steps.deploy.outputs.registryNameOutput }} --registry-password ${{ steps.deploy.outputs.registryPasswordOutput }}
+            az container create -g ${{ steps.deploy.outputs.resourceGroupOutput }} -n ${{ steps.deploy.outputs.webAppNameOutput }} --image ${{ steps.deploy.outputs.registryLoginServer }}/aspnet5webapp:${{ env.COMMIT_REF }} --cpu 1 --memory 1 --registry-username ${{ steps.deploy.outputs.registryNameOutput }} --registry-password ${{ steps.deploy.outputs.registryPasswordOutput }}
