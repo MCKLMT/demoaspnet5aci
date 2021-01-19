@@ -48,4 +48,4 @@ jobs:
         with:
           azcliversion: latest
           inlineScript: |
-            az container create -g ${{ steps.deploy.outputs.resourceGroupOutput }} -n ${{ steps.deploy.outputs.webAppNameOutput }} --image ${{ steps.deploy.outputs.registryLoginServerOutput }}/aspnet5webapp:${{ env.COMMIT_REF }} --cpu 1 --memory 1 --registry-username ${{ steps.deploy.outputs.registryNameOutput }} --registry-password ${{ steps.deploy.outputs.registryPasswordOutput }}
+            az container create -g ${{ steps.deploy.outputs.resourceGroupOutput }} -n ${{ steps.deploy.outputs.webAppNameOutput }} --image ${{ steps.deploy.outputs.registryLoginServerOutput }}/aspnet5webapp:${{ env.COMMIT_REF }} --cpu 1 --memory 1 --registry-username ${{ steps.deploy.outputs.registryNameOutput }} --registry-password ${{ steps.deploy.outputs.registryPasswordOutput }} --ports 80 --protocol TCP --ip-address Public --restart-policy Always
