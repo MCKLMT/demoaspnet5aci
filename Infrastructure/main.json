@@ -14,25 +14,11 @@
   },
   "functions": [],
   "variables": {
-    "appServicePlanName": "[format('appserviceplan-{0}', parameters('webAppName'))]",
     "identityName": "scratch",
     "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')]",
     "roleAssignmentName": "[guid(variables('identityName'), variables('roleDefinitionId'))]"
   },
   "resources": [
-    {
-      "type": "Microsoft.Web/serverfarms",
-      "apiVersion": "2020-06-01",
-      "name": "[variables('appServicePlanName')]",
-      "location": "[parameters('location')]",
-      "sku": {
-        "name": "S1"
-      },
-      "kind": "linux",
-      "properties": {
-        "reserved": true
-      }
-    },
     {
       "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
       "apiVersion": "2018-11-30",
@@ -51,44 +37,6 @@
       },
       "dependsOn": [
         "[resourceId('Microsoft.ContainerRegistry/registries', format('{0}acr', parameters('webAppName')))]",
-        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', 'webAppIdentity')]"
-      ]
-    },
-    {
-      "type": "Microsoft.Web/sites",
-      "apiVersion": "2020-06-01",
-      "name": "[parameters('webAppName')]",
-      "location": "[parameters('location')]",
-      "kind": "app",
-      "identity": {
-        "type": "UserAssigned",
-        "userAssignedIdentities": {
-          "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', 'webAppIdentity')]": {}
-        }
-      },
-      "properties": {
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
-        "siteConfig": {
-          "linuxFxVersion": "DOTNETCORE|5.0",
-          "alwaysOn": true,
-          "appSettings": [
-            {
-              "name": "WEBSITE_WEBDEPLOY_USE_SCM",
-              "value": "true"
-            },
-            {
-              "name": "WEBSITES_PORT",
-              "value": "80"
-            },
-            {
-              "name": "DOCKER_ENABLE_CI",
-              "value": "true"
-            }
-          ]
-        }
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
         "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', 'webAppIdentity')]"
       ]
     },
@@ -117,6 +65,10 @@
     "registryNameOutput": {
       "type": "string",
       "value": "[format('{0}acr', parameters('webAppName'))]"
+    },
+    "managedIdentityIdOutput": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', 'webAppIdentity')]"
     }
   }
 }
