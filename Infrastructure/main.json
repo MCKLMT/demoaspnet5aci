@@ -46,7 +46,7 @@
     },
     "registryPasswordOutput": {
       "type": "string",
-      "value": "[listkeys(resourceId('Microsoft.ContainerRegistry/registries', format('{0}acr', parameters('webAppName'))), '2020-11-01-preview').primaryKey]"
+      "value": "[listCredentials(resourceId('Microsoft.ContainerRegistry/registries', format('{0}acr', parameters('webAppName'))), '2020-11-01-preview').passwords[0].value]"
     }
   }
 }

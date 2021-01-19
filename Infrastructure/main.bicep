@@ -22,4 +22,4 @@ output resourceGroupOutput string = resourceGroup().name
 output webAppNameOutput string = webAppName
 output registryNameOutput string = containerRegistry.name
 output registryLoginServerOutput string = containerRegistry.properties.loginServer
-output registryPasswordOutput string = listkeys(containerRegistry.id, containerRegistry.apiVersion).primaryKey
+output registryPasswordOutput string = listCredentials(containerRegistry.id, containerRegistry.apiVersion).passwords[0].value
