@@ -39,6 +39,14 @@
     "registryNameOutput": {
       "type": "string",
       "value": "[format('{0}acr', parameters('webAppName'))]"
+    },
+    "registryLoginServerOutput": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.ContainerRegistry/registries', format('{0}acr', parameters('webAppName')))).loginServer]"
+    },
+    "registryPasswordOutput": {
+      "type": "string",
+      "value": "[listkeys(resourceId('Microsoft.ContainerRegistry/registries', format('{0}acr', parameters('webAppName'))), '2020-11-01-preview').primaryKey]"
     }
   }
 }
